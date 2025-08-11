@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop Registration</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f2f1;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 20px;
+            background: #609b94;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header Styles */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #000305;
+        }
+
+        .header h1 {
+            color: #000103;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #000303;
+            font-size: 1.1rem;
+        }
+
+        /* Form Styles */
+        .registration-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #000407;
+        }
+
+        .required:after {
+            content: " *";
+            color: #020007;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        input[type="password"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #030000;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        input[type="date"]:focus,
+        input[type="password"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+
+        /* Radio Button Styles */
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 8px;
+            width: 18px;
+            height: 18px;
+            accent-color: #000508;
+        }
+
+        /* Date of Birth Picker */
+        input[type="date"] {
+            position: relative;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            background: transparent;
+            bottom: 0;
+            color: transparent;
+            cursor: pointer;
+            height: auto;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: auto;
+        }
+
+        /* Age Dropdown Styles */
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 1em;
+        }
+
+        /* Workshop Selection */
+        .workshop-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .workshop-option {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .workshop-option:hover {
+            border-color: #000306;
+            background: #eaf4fd;
+        }
+
+        .workshop-option input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            accent-color: #000102;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background-color: #014976;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: #000000;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .registration-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .full-width {
+                grid-column: span 1;
+            }
+        }
+
+        /* Form Validation Styles */
+        .error {
+            color: #04099c;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        input:invalid, select:invalid, textarea:invalid {
+            border-color: #000000;
+        }
+
+        input:invalid + .error, select:invalid + .error, textarea:invalid + .error {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Workshop Event Registration</h1>
+            <p>Join us for an exciting learning experience on emerging technologies</p>
+        </div>
+
+        <form class="registration-form" id="workshopRegistration">
+            <!-- Personal Information Section -->
+            <div class="form-group full-width">
+                <h2 style="color: #000000; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 1px solid #000000;">Personal Information</h2>
+            </div>
+
+            <div class="form-group">
+                <label for="firstName" class="required">First Name</label>
+                <input type="text" id="firstName" name="firstName" required>
+                <div class="error">Please enter your first name</div>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName" class="required">Last Name</label>
+                <input type="text" id="lastName" name="lastName" required>
+                <div class="error">Please enter your last name</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="required">Email Address</label>
+                <input type="email" id="email" name="email" required>
+                <div class="error">Please enter a valid email address</div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone" class="required">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required pattern="[0-9]{10}">
+                <div class="error">Please enter a valid 10-digit phone number</div>
+            </div>
+
+            <div class="form-group">
+                <label class="required">Gender</label>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="male" name="gender" value="male" required>
+                        <label for="male">Male</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="female" name="gender" value="female">
+                        <label for="female">Female</label>
+                    </div>
+                </div>
+                <div class="error">Please select your gender</div>
+            </div>
+
+            <div class="form-group">
+                <label for="dob" class="required">Date of Birth</label>
+                <input type="date" id="dob" name="dob" required max="2005-12-31">
+                <div class="error">Please select your date of birth</div>
+            </div>
+
+            <div class="form-group">
+                <label for="age" class="required">Age</label>
+                <select id="age" name="age" required>
+                    <option value="" disabled selected>Select your age</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25+</option>
+                </select>
+                <div class="error">Please select your age</div>
+            </div>
+
+            <!-- College Information Section -->
+            <div class="form-group full-width">
+                <h2 style="color: #000000; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 1px solid #000000;">College Information</h2>
+            </div>
+
+            <div class="form-group">
+                <label for="collegeName" class="required">College Name</label>
+                <input type="text" id="collegeName" name="collegeName" required>
+                <div class="error">Please enter your college name</div>
+            </div>
+
+            <div class="form-group">
+                <label for="collegeId" class="required">College ID Number</label>
+                <input type="text" id="collegeId" name="collegeId" required>
+                <div class="error">Please enter your college ID</div>
+            </div>
+
+            <div class="form-group">
+                <label for="course" class="required">Course</label>
+                <select id="course" name="course" required>
+                    <option value="" disabled selected>Select your course</option>
+                    <option value="btech">B.Tech</option>
+                    <option value="mtech">M.Tech</option>
+                    <option value="bsc">B.Sc</option>
+                    <option value="msc">M.Sc</option>
+                    <option value="bca">BCA</option>
+                    <option value="mca">MCA</option>
+                    <option value="bba">BBA</option>
+                    <option value="mba">MBA</option>
+                    <option value="other">Other</option>
+                </select>
+                <div class="error">Please select your course</div>
+            </div>
+
+            <div class="form-group">
+                <label for="year" class="required">Year of Study</label>
+                <select id="year" name="year" required>
+                    <option value="" disabled selected>Select year</option>
+                    <option value="1">First Year</option>
+                    <option value="2">Second Year</option>
+                    <option value="3">Third Year</option>
+                    <option value="4">Fourth Year</option>
+                </select>
+                <div class="error">Please select your year of study</div>
+            </div>
+
+            <!-- Workshop Selection Section -->
+            <div class="form-group full-width">
+                <h2 style="color: #000000; margin-bottom: 15px; padding-bottom: 5px; border-bottom: 1px solid #000000;">Workshop Selection</h2>
+            </div>
+
+            <div class="form-group full-width">
+                <label class="required">Select Workshops (Choose at least one)</label>
+                <div class="workshop-options">
+                    <div class="workshop-option">
+                        <input type="checkbox" id="workshop1" name="workshop" value="ai" required>
+                        <label for="workshop1">Artificial Intelligence Fundamentals</label>
+                    </div>
+                    <div class="workshop-option">
+                        <input type="checkbox" id="workshop2" name="workshop" value="blockchain">
+                        <label for="workshop2">Blockchain Technology</label>
+                    </div>
+                    <div class="workshop-option">
+                        <input type="checkbox" id="workshop3" name="workshop" value="cybersecurity">
+                        <label for="workshop3">Cybersecurity Essentials</label>
+                    </div>
+                    <div class="workshop-option">
+                        <input type="checkbox" id="workshop4" name="workshop" value="dataScience">
+                        <label for="workshop4">Data Science with Python</label>
+                    </div>
+                    <div class="workshop-option">
+                        <input type="checkbox" id="workshop5" name="workshop" value="iot">
+                        <label for="workshop5">Internet of Things (IoT)</label>
+                    </div>
+                    <div class="workshop-option">
+                        <input type="checkbox" id="workshop6" name="workshop" value="webDev">
+                        <label for="workshop6">Advanced Web Development</label>
+                    </div>
+                </div>
+                <div class="error">Please select at least one workshop</div>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="expectations">What do you hope to learn from this workshop?</label>
+                <textarea id="expectations" name="expectations" rows="4"></textarea>
+            </div>
+
+            <!-- Terms and Conditions -->
+            <div class="form-group full-width">
+                <div style="display: flex; align-items: flex-start;">
+                    <input type="checkbox" id="terms" name="terms" required style="margin-right: 10px; margin-top: 3px;">
+                    <label for="terms" style="font-weight: normal;">I agree to the <a href="#" style="color: #a7094e;">Terms and Conditions</a> and understand that my data will be used for workshop purposes only.</label>
+                </div>
+                <div class="error">You must agree to the terms and conditions</div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group full-width">
+                <button type="submit" class="submit-btn">Register for Workshop</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Form validation script
+        document.getElementById('workshopRegistration').addEventListener('submit', function(e) {
+            // Check if at least one workshop is selected
+            const workshops = document.querySelectorAll('input[name="workshop"]:checked');
+            if (workshops.length === 0) {
+                e.preventDefault();
+                document.querySelector('.workshop-options + .error').style.display = 'block';
+            }
+            
+            // You can add more validation logic here
+        });
+
+        // Age dropdown based on date of birth
+        document.getElementById('dob').addEventListener('change', function() {
+            const dob = new Date(this.value);
+            const today = new Date();
+            let age = today.getFullYear() - dob.getFullYear();
+            const monthDiff = today.getMonth() - dob.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+                age--;
+            }
+            
+            const ageSelect = document.getElementById('age');
+            if (age >= 16 && age <= 24) {
+                ageSelect.value = age.toString();
+            } else if (age >= 25) {
+                ageSelect.value = '25';
+            }
+        });
+    </script>
+</body>
+</html>
